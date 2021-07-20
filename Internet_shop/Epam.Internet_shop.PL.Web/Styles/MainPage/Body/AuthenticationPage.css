@@ -1,0 +1,33 @@
+﻿.section-auth {
+    display: flex;
+    justify-content: center;
+}
+
+    .section-auth .auth {
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+        background-color: rgba(246, 239, 239, 0.58);
+        border-radius: 10px;
+    }
+
+.auth input {
+    margin: 5px 0;
+    padding: 3px 8px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+}
+
+.auth input[type=submit] {
+    margin: 10px 0;
+    padding: 5px;
+    border-radius: 10px;
+    border: none;
+    background-color: rgba(246, 239, 239, 0.58);
+}
+
+.auth .form-info {
+    margin: 0px 5px;
+    color: red;
+}

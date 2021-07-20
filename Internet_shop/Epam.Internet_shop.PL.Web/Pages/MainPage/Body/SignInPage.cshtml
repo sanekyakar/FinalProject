@@ -1,0 +1,56 @@
+﻿@using Epam.Internet_shop.Common
+@using Epam.Internet_shop.Logger.Contracts
+
+@{
+    Layout = "~/Pages/MainPage/_StartMinePage.cshtml";
+
+    ILogger logger = DependencyResolver.Logger;
+
+    string info = "";
+
+    FormsAuthentication.SignOut();
+
+    if (IsPost)
+    {
+        string login = Request["login"];
+        string password = Request["password"];
+
+        logger.Info("PL: Authentication request received");
+
+        if (DependencyResolver.AuthenticationBll.CheckAuthentication(login, password))
+        {
+            FormsAuthentication.SetAuthCookie(login, true);
+
+            try
+            {
+                Response.Redirect("~/Pages/MainPage/Body/ShowcasePage.cshtml");
+
+                logger.Info("PL: User \"" + login + "\" is authenticated");
+            }
+            catch (NotImplementedException ex)
+            {
+                logger.Error("PL: Incorrect server response: " + ex.Message);
+
+                throw new SystemException("Incorrect server response!", ex);
+            }
+        }
+        else
+        {
+            info = "Неверный логин или пароль!";
+
+            logger.Info("PL: User \"" + login + "\" isn't authenticated");
+        }
+    }
+}
+
+<link href="~/Styles/MainPage/Body/AuthenticationPage.css" rel="stylesheet" />
+
+<section class="section-auth">
+    <form action="" method="post" class="auth">
+        <input type="text" name="login" value="" placeholder="Введите логин" required />
+        <input type="password" name="password" value="" placeholder="Введите пароль" required />
+        <span class="form-info">@info</span>
+        <input type="submit" name="submit" value="Войти" />
+        <a href="~/Pages/MainPage/Body/RegistrationPage.cshtml">Регистрация</a>
+    </form>
+</section>

@@ -1,0 +1,138 @@
+﻿@using Epam.Internet_shop.Common
+@using Epam.Internet_shop.Common.Entities.CommodityUnit
+@using Epam.Internet_shop.Logger.Contracts
+@using Epam.Internet_shop.BLL.Contracts
+@{
+    Layout = "~/Pages/ControlWindow/_StartControlPage.cshtml";
+
+    Page.Title = "Categories";
+    Page.TitleRus = "Категории";
+
+    ILogger logger = DependencyResolver.Logger;
+    ICategoryBll categoryBll = DependencyResolver.CategoryBll;
+
+    logger.Info("PL: CategoryControlPage request received");
+
+    if (!User.IsInRole("admin"))
+    {
+        logger.Warn("PL: No access right " + User.Identity.Name);
+
+        Response.Redirect("~/Pages/MainPage/Body/ShowcasePage.cshtml");
+    }
+
+    if (IsPost)
+    {
+        logger.Info("PL: Post request received");
+
+        string modalType = Request["type"];
+        string modalId = Request["id"];
+        string modalName = Request["name"];
+
+        int id;
+
+        logger.Info("PL: modalType \"" + modalType + "\" received");
+
+        switch (modalType)
+        {
+            case "remove":
+                if (int.TryParse(modalId, out id))
+                {
+                    categoryBll.RemoveCategory(id);
+
+                    logger.Info("PL: Category id=" + id + " removed");
+
+                    Response.Redirect("~/Pages/ControlWindow/Body/CategoryControlPage.cshtml");
+                }
+                else
+                {
+                    logger.Error("PL: Incorrect modalId for remove");
+
+                    throw new ArgumentNullException("Incorrect modalId");
+                }
+                break;
+            case "add":
+                id = categoryBll.SetCategory(new Category(null, modalName));
+
+                logger.Info("PL: Category id=" + id + " created");
+
+                Response.Redirect("~/Pages/ControlWindow/Body/CategoryControlPage.cshtml");
+
+                break;
+            case "change":
+                if (int.TryParse(modalId, out id))
+                {
+                    categoryBll.SetCategory(new Category(id, modalName));
+
+                    logger.Info("PL: Category id=" + id + " changed");
+
+                    Response.Redirect("~/Pages/ControlWindow/Body/CategoryControlPage.cshtml");
+                }
+                else
+                {
+                    logger.Error("PL: Incorrect modalId for change");
+
+                    throw new ArgumentNullException("Incorrect modalId");
+                }
+                break;
+            default:
+                logger.Error("PL: Incorrect modalType");
+
+                throw new ArgumentNullException("Incorrect modalType");
+        }
+    }
+}
+
+<link href="~/Styles/ControlWindow/Body/CategoryControlStyle.css" rel="stylesheet" />
+
+<section>
+
+    <nav class="nav-bar">
+        <button id="addCategory-btn">Добавить</button>
+        @*<button id="updateCatgory-btn">Обновить</button>*@
+    </nav>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Название</th>
+                <th>Колличество товаров</th>
+                <th>Опции</th>
+            </tr>
+        </thead>
+        <tbody id="table-body">
+            @foreach (var category in categoryBll.GetAllCategoriesWithUnits())
+            {
+                <tr id="@category.Id">
+                    <td name="id">@category.Id</td>
+                    <td name="name">@category.Name</td>
+                    <td name="CountUnits">@category.Units.Count</td>
+                    <td name="bnts">
+                        <button name="changeCategory-btn">Изменить</button>
+                        <form action="" method="post">
+                            <input type="text" id="modal-type" name="type" value="remove" hidden="hidden" />
+                            <input type="text" id="modal-id" name="id" value="@category.Id" hidden="hidden" />
+                            <button name="removeCategory-btn">Удалить</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</section>
+
+<section id="modal" class="modal">
+    <form id="modal-window" action="" method="post" class="model-window">
+        <input type="text" id="modal-categoryType" name="type" value="" hidden="hidden" />
+        <input type="text" id="modal-categoryId" name="id" value="" hidden="hidden" />
+        <input type="text" id="modal-categoryName" name="name" value="" placeholder="Введите имя" required />
+        <div class="btn">
+            <button id="add-btn">Добавить</button>
+            <input id="close-btn" type="button" name="close-btn" value="Закрыть" />
+        </div>
+    </form>
+</section>
+
+<script src="~/Scripts/ControlWindow/Body/ConstantCategoryControlScript.js"></script>
+<script src="~/Scripts/ControlWindow/Body/CategoryControlScript.js"></script>

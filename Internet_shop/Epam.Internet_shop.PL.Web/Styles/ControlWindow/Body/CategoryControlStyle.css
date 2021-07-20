@@ -1,0 +1,46 @@
+﻿nav.nav-bar {
+    border: 1px solid grey;
+    padding: 5px;
+}
+
+table {
+    margin-top: 20px;
+}
+
+table form {
+    display: inline-flex;
+}
+
+th, td {
+    padding: 10px;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(128, 128, 128, 0.40);
+    justify-content: center;
+}
+
+    .modal .model-window {
+        align-self: center;
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: rgba(255, 255, 255, 0.50) 0px 0px 20px 6px;
+        height: auto;
+    }
+
+        .modal .model-window .btn {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        .modal .model-window input[type=text] {
+            margin-bottom: 10px;
+        }

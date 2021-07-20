@@ -1,0 +1,225 @@
+﻿<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{57F53986-DD88-4D14-AE23-7706C07EDA0F}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Epam.Internet_shop.PL.Web</RootNamespace>
+    <AssemblyName>Epam.Internet_shop.PL.Web</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <Use64BitIISExpress />
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TypeScriptToolsVersion>3.1</TypeScriptToolsVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.4\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.4\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.4\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.4\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.4\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.4\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Global.asax" />
+    <Content Include="Images\hotpng.com.png" />
+    <Content Include="Scripts\ControlWindow\Body\CategoryControlScript.js" />
+    <Content Include="Scripts\ControlWindow\Body\ConstantCategoryControlScript.js" />
+    <Content Include="Scripts\ControlWindow\Body\ConstantProductControlScript.js" />
+    <Content Include="Scripts\ControlWindow\Body\ConstantUserControlScript.js" />
+    <Content Include="Scripts\ControlWindow\Body\ProductControlScript.js" />
+    <Content Include="Scripts\ControlWindow\Body\UserControlScript.js" />
+    <Content Include="Scripts\MainPage\Body\ConstantShowcaseScript.js" />
+    <Content Include="Scripts\MainPage\Body\ShowcaseScript.js" />
+    <Content Include="Scripts\MainPage\ConstantStartMain.js" />
+    <Content Include="Scripts\MainPage\StartMainScript.js" />
+    <Content Include="Styles\ControlWindow\Body\CategoryControlStyle.css" />
+    <Content Include="Styles\ControlWindow\Body\ProductControlStyle.css" />
+    <Content Include="Styles\ControlWindow\Body\UserControlStyle.css" />
+    <Content Include="Styles\ControlWindow\StartControlStyle.css" />
+    <Content Include="Styles\MainPage\AuthenticationSection.css" />
+    <Content Include="Styles\MainPage\Body\AuthenticationPage.css" />
+    <Content Include="Styles\MainPage\RoleAdminStyle.css" />
+    <Content Include="Styles\MainPage\Body\ShowcasePage.css" />
+    <Content Include="Styles\MainPage\StartMinePage.css" />
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Code\Provider.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Handlers\ProductAjaxHandler.ashx.cs">
+      <DependentUpon>ProductAjaxHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Handlers\ShowcaseAjaxHandler.ashx.cs">
+      <DependentUpon>ShowcaseAjaxHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Handlers\UserAjaxHandler.ashx.cs">
+      <DependentUpon>UserAjaxHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Index.cshtml" />
+    <Content Include="Handlers\ShowcaseAjaxHandler.ashx" />
+    <Content Include="Handlers\ProductAjaxHandler.ashx" />
+    <Content Include="Handlers\UserAjaxHandler.ashx" />
+    <None Include="packages.config" />
+    <Content Include="Pages\MainPage\AuthenticatedSection.cshtml" />
+    <Content Include="Pages\MainPage\NotAuthenticatedSection.cshtml" />
+    <Content Include="Pages\MainPage\FooterSection.cshtml" />
+    <Content Include="Pages\MainPage\Body\ShowcasePage.cshtml" />
+    <Content Include="Pages\MainPage\Body\SignInPage.cshtml" />
+    <Content Include="Pages\MainPage\Body\RegistrationPage.cshtml" />
+    <Content Include="Pages\ControlWindow\_StartControlPage.cshtml" />
+    <Content Include="Pages\ControlWindow\Body\CategoryControlPage.cshtml" />
+    <Content Include="Pages\ControlWindow\Body\ProductControlPage.cshtml" />
+    <Content Include="Pages\ControlWindow\Body\UserControlPage.cshtml" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <Content Include="Pages\MainPage\_StartMinePage.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Epam.Internet_shop.BLL.Contracts\Epam.Internet_shop.BLL.Contracts.csproj">
+      <Project>{ea67bf1f-f800-43f6-9755-384dfee4c957}</Project>
+      <Name>Epam.Internet_shop.BLL.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Epam.Internet_shop.BLL\Epam.Internet_shop.BLL.csproj">
+      <Project>{f84be68f-7d5b-4030-ae33-045e18e5cf87}</Project>
+      <Name>Epam.Internet_shop.BLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Epam.Internet_shop.Common.Entities\Epam.Internet_shop.Common.Entities.csproj">
+      <Project>{f1865e0c-fd71-4a34-b58a-84ec1c8df7f9}</Project>
+      <Name>Epam.Internet_shop.Common.Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Epam.Internet_shop.Common\Epam.Internet_shop.Common.Dependensy_Resolver.csproj">
+      <Project>{a14a163e-eae8-4a61-84b9-a3f2364a24a1}</Project>
+      <Name>Epam.Internet_shop.Common.Dependensy_Resolver</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Epam.Internet_shop.Logger.Contracts\Epam.Internet_shop.Logger.Contracts.csproj">
+      <Project>{d43e3eda-af14-48d7-95e3-94e14893b887}</Project>
+      <Name>Epam.Internet_shop.Logger.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Epam.Internet_shop.Logger.Log4net\Epam.Internet_shop.Logger.Log4net.csproj">
+      <Project>{6c919ab5-966d-465a-8f96-0008b5a32fa4}</Project>
+      <Name>Epam.Internet_shop.Logger.Log4net</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup />
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>60693</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:60693/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Данный проект ссылается на пакеты NuGet, отсутствующие на этом компьютере. Используйте восстановление пакетов NuGet, чтобы скачать их.  Дополнительную информацию см. по адресу: http://go.microsoft.com/fwlink/?LinkID=322105. Отсутствует следующий файл: {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

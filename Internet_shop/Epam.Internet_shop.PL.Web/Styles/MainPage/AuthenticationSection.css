@@ -1,0 +1,20 @@
+﻿.auth-container {
+    width: 180px;
+    height: auto;
+    background-color: rgba(246, 239, 239, 0.18);
+    border-radius: 8px;
+    padding: 5px;
+    overflow: hidden;
+
+    color: white;
+    justify-content: space-around;
+}
+
+.auth-container a {
+    text-decoration: none;
+    font-style: italic;
+    
+    font-weight: bolder;
+    font-size: larger;
+    color: white;
+}

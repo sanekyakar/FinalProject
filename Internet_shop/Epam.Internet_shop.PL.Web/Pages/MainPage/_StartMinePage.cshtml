@@ -1,0 +1,142 @@
+﻿@using Epam.Internet_shop.PL.Web.Handlers
+@using Epam.Internet_shop.Common
+@using Epam.Internet_shop.Logger.Contracts
+@using Epam.Internet_shop.BLL.Contracts
+
+@{
+    ShowcaseAjaxHandler.HttpSession = Session;
+
+    ILogger logger = DependencyResolver.Logger;
+    ICategoryBll categoryBll = DependencyResolver.CategoryBll;
+
+    logger.Info("PL: Main Page request received");
+
+    int CatalogueId = int.Parse(Request["catetory-id"] ?? "-1");
+    string SearchStr = Request["search"] as string ?? "";
+
+    int? SessionCatalogue = Session["Catalogue"] as int?;
+
+    logger.Info("PL: Data acquisition " + nameof(CatalogueId) + " and " + nameof(SearchStr));
+
+    if (SessionCatalogue != null)
+    {
+        if (CatalogueId == -1 || CatalogueId == SessionCatalogue)
+        {
+            logger.Info("PL: The catalog has not changed");
+
+            Session.Remove("Enumerator");
+
+            if ((Session["Search"] as string) != SearchStr)
+            {
+                Session["Search"] = SearchStr;
+
+                logger.Info("PL: The search has changed to " + SearchStr);
+            }
+        }
+        else
+        {
+            Session.Remove("Enumerator");
+
+            Session["Catalogue"] = CatalogueId;
+
+            logger.Info("PL: The catalog has changed to id " + CatalogueId);
+        }
+
+        logger.Info("PL: SessionCatalogue has been used");
+    }
+    else
+    {
+        if (CatalogueId == -1)
+        {
+            Session.Add("Catalogue", 0);
+        }
+        else
+        {
+            Session.Add("Catalogue", CatalogueId);
+        }
+
+        logger.Info("PL: SessionCatalogue has been created");
+    }
+}
+
+<!DOCTYPE html>
+
+<html lang="ru">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Internet Store</title>
+
+    <script src="~/Scripts/MainPage/StartMainScript.js"></script>
+    <link href="~/Styles/MainPage/StartMinePage.css" rel="stylesheet" />
+</head>
+<body>
+
+    <nav id="control-panel" class="control-panel">
+        <ul>
+            <li><a href="~/Pages/ControlWindow/Body/CategoryControlPage.cshtml">Категории</a></li>
+            <li><a href="~/Pages/ControlWindow/Body/ProductControlPage.cshtml">Товары</a></li>
+            <li><a href="~/Pages/ControlWindow/Body/UserControlPage.cshtml">Пользователи</a></li>
+        </ul>
+    </nav>
+
+    <header>
+        <img src="~/Images/hotpng.com.png" alt="image" />
+        @if (User.Identity.IsAuthenticated)
+        {
+            @RenderPage("/Pages/MainPage/AuthenticatedSection.cshtml", null);
+        }
+        else
+        {
+            @RenderPage("/Pages/MainPage/NotAuthenticatedSection.cshtml", null);
+        }
+    </header>
+
+    <nav id="nav-startMain" class="nav-bar">
+        <div name="nav-btn" class="nav-btn">
+            <button><strong><a href="~/Pages/MainPage/Body/ShowcasePage.cshtml">Главная</a></strong></button>
+            <button name="catalogue-btn"><strong>Каталог</strong></button>
+        </div>
+
+        <form class="search-container">
+            <input class="search-text" type="text" name="search" value="@SearchStr" placeholder="Поиск ..." />
+            <button class="search-btn">Поиск</button>
+        </form>
+    </nav>
+
+    <main>
+        <nav id="nav-catalogue" class="nav-catalog">
+            <ul>
+                <li>
+                    <form action="#" method="get">
+                        <input type="text" name="catetory-id" value=0 hidden="hidden" />
+                        <button class="catalog-btn">Все катологи</button>
+                    </form>
+                </li>
+                @foreach (var category in categoryBll.GetAllCategories())
+                {
+                    <li>
+                        <form action="" method="get">
+                            <input type="text" name="catetory-id" value=@category.Id hidden="hidden" />
+                            <button class="catalog-btn">@category.Name</button>
+                        </form>
+                    </li>
+                }
+            </ul>
+        </nav>
+        <section class="main-section">
+            @RenderBody()
+        </section>
+    </main>
+
+    <footer>
+        @RenderPage("/Pages/MainPage/FooterSection.cshtml", null)
+    </footer>
+
+    <script src="~/Scripts/MainPage/ConstantStartMain.js"></script>
+    @RenderSection("Body", false)
+    @if (User.IsInRole("admin") || User.IsInRole("manager"))
+    {
+        <link href="~/Styles/MainPage/RoleAdminStyle.css" rel="stylesheet" />
+    }
+</body>
+</html>

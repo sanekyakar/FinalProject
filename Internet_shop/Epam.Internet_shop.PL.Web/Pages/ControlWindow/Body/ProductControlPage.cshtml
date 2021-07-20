@@ -1,0 +1,233 @@
+﻿@using System
+@using System.Drawing
+@using System.Drawing.Imaging
+@using Epam.Internet_shop.PL.Web.Handlers
+@using Epam.Internet_shop.Common
+@using Epam.Internet_shop.Common.Entities.CommodityUnit
+@using Epam.Internet_shop.Logger.Contracts
+@using Epam.Internet_shop.BLL.Contracts
+@{
+    Layout = "~/Pages/ControlWindow/_StartControlPage.cshtml";
+
+    Page.Title = "Products";
+    Page.TitleRus = "Товары";
+
+    ProductAjaxHandler.HttpSession = Session;
+
+    ILogger logger = DependencyResolver.Logger;
+    ICommodityUnitBll commodityUnitBll = DependencyResolver.CommodityUnitBll;
+    IProductBll productBll = DependencyResolver.ProductBll;
+    ICategoryBll categoryBll = DependencyResolver.CategoryBll;
+    IStoreBll storeBll = DependencyResolver.StoreBll;
+    IVendorBll vendorBll = DependencyResolver.VendorBll;
+    IStatusBll statusBll = DependencyResolver.StatusBll;
+
+    logger.Info("PL: ProductControlPage request received");
+
+    if (!User.IsInRole("admin") && !User.IsInRole("manager"))
+    {
+        logger.Warn("PL: No access right " + User.Identity.Name);
+
+        Response.Redirect("~/Pages/MainPage/Body/ShowcasePage.cshtml");
+    }
+
+    #region Form Hendler
+
+    int id;
+
+    if (int.TryParse(Request["id"], out id))
+    {
+        logger.Info("PL: Received data from id = " + id);
+
+        string ProductIdStr = Request["product"];
+        string PriceStr = Request["price"];
+        string StoreIdStr = Request["store"];
+        string VendorIdStr = Request["vendor"];
+        string StatusIdStr = Request["status"];
+
+        int ProductId;
+        Product product = null;
+        if (int.TryParse(ProductIdStr, out ProductId) && ProductId != -1)
+        {
+            if (ProductId == -2)
+            {
+                logger.Info("PL: Сreation of a new product");
+
+                int categoryId;
+                Category category = null;
+                if (int.TryParse(Request["productCategory"], out categoryId) && categoryId != -1)
+                {
+                    category = categoryBll.GetCategoryOrNull(categoryId);
+                }
+
+                var fileImage = Request.Files["productImage"].InputStream;
+
+                byte[] butes = new byte[fileImage.Length];
+
+                fileImage.Read(butes, 0, (int)fileImage.Length);
+
+                string base64ImageStr = "data:image/jpag;base64," + Convert.ToBase64String(butes);
+
+                product = new Product(null, Request["productName"], base64ImageStr, Request["productDiscription"], category);
+            }
+            else
+            {
+                product = productBll.GetProductOrNull(ProductId);
+
+                logger.Info("PL: Selected product id = " + ProductId);
+            }
+        }
+
+
+        decimal Price = 0;
+        decimal.TryParse(PriceStr, out Price);
+
+        int StoreId;
+        Store store = null;
+        if (int.TryParse(StoreIdStr, out StoreId) && StoreId != -1)
+        {
+            store = storeBll.GetStoreOrNull(StoreId);
+        }
+
+        int VendorId;
+        Vendor vendor = null;
+        if (int.TryParse(VendorIdStr, out VendorId) && VendorId != -1)
+        {
+            vendor = vendorBll.GetVendorOrNull(VendorId);
+        }
+
+        int StatusId;
+        Status status = null;
+        if (int.TryParse(StatusIdStr, out StatusId) && StatusId != -1)
+        {
+            status = statusBll.GetStatusOrNull(StatusId);
+        }
+
+        if (id == -1)
+        {
+            logger.Info("PL: Adding a unit");
+
+            int idUnit = commodityUnitBll.SetCommodityUnit(new CommodityUnit(null, product, store, vendor, status, Price));
+
+            logger.Info("PL: Added unit id = " + idUnit);
+        }
+        else
+        {
+            logger.Info("PL: Unit change");
+
+            int idUnit = commodityUnitBll.SetCommodityUnit(new CommodityUnit(id, product, store, vendor, status, Price));
+
+            logger.Info("PL: Unit changed id = " + idUnit);
+        }
+    }
+
+    #endregion
+
+    #region Session Data
+
+    string SearchStr = Request["search"] as string ?? "";
+
+    logger.Info("PL: Data acquisition " + nameof(SearchStr));
+
+    Session.Remove("Enumerator");
+
+    if ((Session["Search"] as string) != SearchStr)
+    {
+        Session["Search"] = SearchStr;
+
+        logger.Info("PL: The search has changed to " + SearchStr);
+    }
+
+    #endregion
+
+    IEnumerable<Product> products = productBll.GetAllProducts();
+    IEnumerable<Category> categories = categoryBll.GetAllCategories();
+    IEnumerable<Store> stors = storeBll.GetAllStores();
+    IEnumerable<Vendor> vendors = vendorBll.GetAllVendors();
+    IEnumerable<Status> statuses = statusBll.GetAllStatuses();
+}
+
+<link href="~/Styles/ControlWindow/Body/ProductControlStyle.css" rel="stylesheet" />
+
+<section>
+
+    <nav class="nav-bar">
+        <button id="addProduct-btn">Добавить</button>
+        <form action="" method="get">
+            <input id="search-text" type="search" name="search" value="@SearchStr" />
+            <button id="searchProduct-btn">Найти</button>
+        </form>
+    </nav>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Название</th>
+                <th>Цена</th>
+                <th>Категория</th>
+                <th>Склад</th>
+                <th>Поставщик</th>
+                <th>Статус</th>
+                <th>Опции</th>
+            </tr>
+        </thead>
+        <tbody id="table-body"></tbody>
+    </table>
+
+    <button id="nextAjax-btn">Показать следующие</button>
+
+</section>
+
+<section id="modal" class="modal">
+    <form id="modal-window" action="" enctype="multipart/form-data" method="post" class="model-window">
+        <input type="text" id="modal-id" name="id" value="" hidden="hidden" />
+        <select id="modal-product" name="product">
+            <option value="-1" selected="selected">Продукт не выбран</option>
+            <option value="-2">Создать новый продукт</option>
+            @foreach (var product in products)
+            {
+                <option value="@product.Id">@product.Name</option>
+            }
+        </select>
+        <input type="text" id="modal-productName" name="productName" value="" placeholder="Введите имя продукта" />
+        <input type="file" id="modal-productImage" name="productImage" accept="image/jpag"/>
+        <textarea id="modal-productDiscription" name="productDiscription" placeholder="Введите описание продукта"></textarea>
+        <select id="modal-productCategory" name="productCategory">
+            <option value="-1" selected="selected">Категория не выбрана</option>
+            @foreach (var category in categories)
+            {
+                <option value="@category.Id">@category.Name</option>
+            }
+        </select>
+        <input type="number" id="modal-price" name="price" value="" placeholder="Введите цену" required />
+        <select id="modal-store" name="store">
+            <option value="-1" selected="selected">Склад не выбран</option>
+            @foreach (var store in stors)
+            {
+                <option value="@store.Id">@store.Name</option>
+            }
+        </select>
+        <select id="modal-vendor" name="vendor">
+            <option value="-1" selected="selected">Поставщик не выбран</option>
+            @foreach (var vendor in vendors)
+            {
+                <option value="@vendor.Id">@vendor.Name</option>
+            }
+        </select>
+        <select id="modal-status" name="status">
+            <option value="-1" selected="selected">Статус не выбран</option>
+            @foreach (var status in statuses)
+            {
+                <option value="@status.Id">@status.Name</option>
+            }
+        </select>
+        <div class="btn">
+            <button id="add-btn">Добавить</button>
+            <input id="close-btn" type="button" name="close-btn" value="Закрыть" />
+        </div>
+    </form>
+</section>
+
+<script src="~/Scripts/ControlWindow/Body/ConstantProductControlScript.js"></script>
+<script src="~/Scripts/ControlWindow/Body/ProductControlScript.js"></script>

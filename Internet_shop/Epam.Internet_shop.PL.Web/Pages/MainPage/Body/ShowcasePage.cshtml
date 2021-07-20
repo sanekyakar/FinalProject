@@ -1,0 +1,40 @@
+﻿@using Epam.Internet_shop.Common
+@using Epam.Internet_shop.Logger.Contracts
+
+@{
+    Layout = "~/Pages/MainPage/_StartMinePage.cshtml";
+
+    ILogger logger = DependencyResolver.Logger;
+}
+
+<link href="~/Styles/MainPage/Body/ShowcasePage.css" rel="stylesheet" />
+
+<section id="showcase-container" class="showcase">
+
+</section>
+
+<div class="listing">
+    <button id="nextAjax-btn">Показать следующие</button>
+</div>
+
+<section id="modal" class="modal">
+    <form id="modal-window" action="" method="get" class="model-window">
+        <img id="modal-showcaseProductImage" src="~/Images/hotpng.com.png" alt="Alternate Text" />
+        <p id="modal-showcaseProductName"></p>
+        <p id="modal-showcasePrice"></p>
+        <p id="modal-showcaseProductDiscription"></p>
+        <p id="modal-showcaseCategoryName"></p>
+        <p id="modal-showcaseStatusName"></p>
+        <p id="modal-showcaseStoreName"></p>
+        <p id="modal-showcaseVendorName"></p>
+        <div class="btn">
+            <input id="close-btn" type="button" name="close-btn" value="Закрыть" />
+            <button>Купить</button>
+        </div>
+    </form>
+</section>
+
+@section Body {
+    <script src="~/Scripts/MainPage/Body/ConstantShowcaseScript.js"></script>
+    <script src="~/Scripts/MainPage/Body/ShowcaseScript.js"></script>
+}

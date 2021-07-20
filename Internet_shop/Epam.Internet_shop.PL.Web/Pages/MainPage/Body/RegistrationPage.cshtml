@@ -1,0 +1,81 @@
+﻿@using Epam.Internet_shop.Common
+@using Epam.Internet_shop.Logger.Contracts
+@using Epam.Internet_shop.Common.Entities.User
+
+@{
+    Layout = "~/Pages/MainPage/_StartMinePage.cshtml";
+
+    ILogger logger = DependencyResolver.Logger;
+
+    string info = "";
+
+    if (IsPost)
+    {
+        string login = Request["login"];
+        string password = Request["password"];
+        string passwordRepeat = Request["password-repeat"];
+        string name = Request["name"];
+
+        logger.Info("PL: Registration request received");
+
+        if (password == passwordRepeat)
+        {
+            logger.Info("PL: Passwords match");
+
+            if (!DependencyResolver.AuthenticationBll.IsLogin(login))
+            {
+                logger.Info("PL: This login \"" + login + "\" is free");
+
+                try
+                {
+                    Role userRole = DependencyResolver.RoleBll.GetAllRoles().First(role => role.Name == "user");
+
+                    DependencyResolver.UserBll.SetUser(new User(null, login, password, userRole, name));
+
+                    logger.Info("PL: User \"" + login + "\" registered");
+
+                    Response.Redirect("~/Pages/MainPage/Body/SignInPage.cshtml");
+
+                }
+                catch (InvalidOperationException ex)
+                {
+                    logger.Error("PL: Not found role \"user\": " + ex.Message);
+
+                    throw new SystemException("Not found role \"user\"!" + ex.Message);
+                }
+                catch (NotImplementedException ex)
+                {
+                    logger.Error("PL: Incorrect server response: " + ex.Message);
+
+                    throw new SystemException("Incorrect server response!", ex);
+                }
+            }
+            else
+            {
+                logger.Info("PL: This login \"" + login + "\" is busy");
+
+                info = "Такой пользователь уже существует!";
+            }
+        }
+        else
+        {
+            logger.Info("PL: Passwords don't match");
+
+            info = "Пароли не совпадают!";
+        }
+    }
+}
+
+<link href="~/Styles/MainPage/Body/AuthenticationPage.css" rel="stylesheet" />
+
+<section class="section-auth">
+    <form action="" method="post" class="auth">
+        <input type="text" name="login" value="" placeholder="Придумайте логин" required />
+        <input type="password" name="password" value="" placeholder="Придумайте пароль" required />
+        <input type="password" name="password-repeat" value="" placeholder="Повторите пароль" required />
+        <input type="text" name="name" value="" placeholder="Введите имя" required />
+        <span class="form-info">@info</span>
+        <input type="submit" name="submit" value="Регистрация" />
+        <a href="~/Pages/MainPage/Body/SignInPage.cshtml">Войти</a>
+    </form>
+</section>
